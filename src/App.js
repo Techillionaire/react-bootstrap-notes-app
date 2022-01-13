@@ -1,13 +1,15 @@
+import "./App.css"
+import NoteList from "./components/NoteList"
 
-import Notes from './components/Notes'
-import './App.css';
+
+
 
 
 
 const App = () => {
   return (
-    <div className="App">
-      <Notes />
+    <div className="app">
+      <NoteList />
     </div>
   )
 }

@@ -1,48 +1,56 @@
+import { useState,  } from 'react'
+import NoteForm from './NoteForm'
+
+const Notes = ({ notes, completeNote, removeNote, updateNote, time }) => { 
+    const [edit, setEdit] = useState({
+      id: null,
+      value: ''
+    })
 
 
-const Notes = () => {
-  return (
-    <div className="form">
-      <div>
-        <form className="row g-3">
-          <div class="form-floating col-9">
-            <textarea class="form-control" placeholder="Enter text" id="floatingTextarea2"  />
-          </div>
+    
+    const submitUpdate = value => {
+      updateNote(edit.id, value);
+      setEdit({
+        id: null,
+        value: ''
+      });
+    };
+  
+    if (edit.id) {
+      return <NoteForm edit={edit} onSubmit={submitUpdate} />;
+    }
 
-          <div className="col-3 mr-2">
-            <button type="submit" class="btn btn-primary">  SAVE <i class="bi bi-download btn-lg" /></button>
-          </div>
-        </form>
-      </div>
+  return notes.map((note, index) => (
 
-      <div>
-        <div class="card">
-          <div class="card-header mb-3">
-            Notes
-          </div>
-
-          <div class="card-body">
-            <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-            <div>
-              <div>
-                <footer class="blockquote-footer">Jan/11/2022</footer>
-              </div>
-              
-              <div className="icon">
-                <i class="bi bi-pen text-primary" />
-                <i class="bi bi-trash text-danger" />
-
-              </div>
-
-            </div>
+    <div className="card shadow-sm m-3 bg-body rounded">
+        <div
+            className={note.isComplete ? 'todo-row complete card' : 'todo-row'}
+            key={index}
+          >
             
+            <div className="card-body bodyCard">
+              <div  className="card-text" key={note.id} onClick={() => completeNote(note.id)}>
+                <p className="text-start lh-sm">{note.text}</p>
+              </div>
+
+              <div className='row m-0'>
+                <div className="col">
+                  <p className="text-start">{time}</p>
+                </div>
+
+                <div className="col text-end">
+                  <i className="bi bi-pen editIcon text-end m-2" data-bs-toggle="tooltip" data-bs-placement="bottom" title="edit" onClick={() => setEdit({ id: note.id, value: note.text })}/>
+                  <i className="bi bi-trash deleteIcon text-end" data-bs-toggle="tooltip" data-bs-placement="bottom" title="delete"onClick={() => removeNote(note.id)} />
+                </div>
+              </div>
+            </div>
           </div>
 
-        </div>
-      </div>
-      
     </div>
-  )
+    
+  ));
 }
 
 export default Notes
+
